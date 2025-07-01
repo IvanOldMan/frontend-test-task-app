@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import { RequestType } from './types.ts';
+import { type RequestType } from './types.ts';
 
 interface RequestState {
-  list?: any;
+  list?: RequestType[];
 }
 
 const initialState: RequestState = {
-  list: undefined,
+  list: JSON.parse(localStorage.getItem('requests')) || [],
 };
 
 const requestSlice = createSlice({
