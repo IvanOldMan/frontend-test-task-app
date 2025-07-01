@@ -3,5 +3,5 @@ export type RequestType = {
   name: string;
   description: string;
   category: string;
-  dateOfCreation: Date;
+  createdAt: Date;
 };
