@@ -28,4 +28,10 @@
   margin-top: 24px;
   display: flex;
   gap: 16px;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
 } 

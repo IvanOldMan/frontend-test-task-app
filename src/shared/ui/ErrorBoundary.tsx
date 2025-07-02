@@ -1,10 +1,10 @@
 import React from 'react';
 import type { ReactNode } from 'react';
-// Для поддержки PropTypes в TypeScript можно установить @types/prop-types
 import PropTypes from 'prop-types';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './ErrorBoundary.module.css';
 import { Button } from './Button';
+import { ROUTE_PATHS } from '../../shared/config/routeConfig/routePaths.ts';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -24,12 +24,8 @@ class ErrorBoundary extends React.Component<
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
+  static getDerivedStateFromError(): ErrorBoundaryState {
     return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Можно логировать ошибку на сервер
   }
 
   componentDidUpdate(prevProps: ErrorBoundaryProps) {
@@ -55,14 +51,12 @@ function ErrorFallback() {
   const navigate = useNavigate();
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Что-то пошло не так 😢</h1>
+      <h1 className={styles.title}>Что-то пошло не так...</h1>
       <div className={styles.actions}>
         <Button secondary onClick={() => navigate(-1)}>
           Назад
         </Button>
-        <Button onClick={() => navigate('/requests')}>
-          На главную
-        </Button>
+        <Button onClick={() => navigate(ROUTE_PATHS.REQUESTS)}>На главную</Button>
       </div>
     </div>
   );

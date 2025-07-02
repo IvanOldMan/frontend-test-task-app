@@ -1,13 +1,19 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { type RootState } from '../app/store.ts';
-import { deleteRequest } from '../entities/request/model/slice.ts';
+import { type RootState } from '../../app/store.ts';
+import {
+  deleteRequest,
+  updateRequest,
+} from '../../entities/request/model/slice.ts';
 import { useState } from 'react';
-import { Modal } from '../widgets/Modal/ui/Modal.tsx';
+import { Modal } from '../../widgets/Modal/ui/Modal.tsx';
 import styles from './RequestItem.module.css';
-import { Button } from '../shared/ui/Button';
-import { RequestForm } from '../features/create-request-form/ui/RequestForm.tsx';
+import { Button } from '../../shared/ui/Button.tsx';
+import { RequestForm } from '../../features/request-form/ui/RequestForm.tsx';
+import type { FormikConfig } from 'formik';
+import type { RequestType } from '../../entities/request/model/types.ts';
+import { ROUTE_PATHS } from '../../shared/config/routeConfig/routePaths.ts';
 
 export const RequestItem = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,7 +28,7 @@ export const RequestItem = () => {
   const handleDelete = () => {
     if (request && confirm(`Удалить заявку ${request.name}`)) {
       dispatch(deleteRequest(request.id));
-      navigate('/requests');
+      navigate(ROUTE_PATHS.REQUESTS);
     }
   };
 
@@ -30,12 +36,22 @@ export const RequestItem = () => {
     setModalOpenState(true);
   };
 
+  const handleCloseModal = () => {
+    setModalOpenState(false);
+  };
+
   if (!request) {
     throw new Error('Request item not found');
   }
 
-  const onSubmit = (data: any) => {
-    // Handle form submission
+  const onSubmit: FormikConfig<RequestType>['onSubmit'] = (values) => {
+    dispatch(
+      updateRequest({
+        ...request,
+        ...values,
+      }),
+    );
+    handleCloseModal();
   };
 
   return (
@@ -69,20 +85,20 @@ export const RequestItem = () => {
           Удалить заявку
         </Button>
       </div>
-      <Modal isOpen={modalOpenState} onClose={() => setModalOpenState(false)}>
+      <Modal isOpen={modalOpenState} onClose={handleCloseModal}>
         <RequestForm
           onSubmit={onSubmit}
           name={request.name}
           description={request.description}
           category={request.category}
-          onClose={() => setModalOpenState(false)}
+          onClose={handleCloseModal}
           title="Редактирование заявки"
         />
-        <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
+        <div className={styles.modalActions}>
           <Button type="submit" form="fuckenForm">
             Сохранить изменения
           </Button>
-          <Button secondary onClick={() => setModalOpenState(false)}>
+          <Button secondary onClick={handleCloseModal}>
             Отмена
           </Button>
         </div>

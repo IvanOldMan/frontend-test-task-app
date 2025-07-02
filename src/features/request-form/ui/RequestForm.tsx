@@ -2,10 +2,8 @@ import React, { type FC, useRef, useEffect } from 'react';
 import { type RequestType } from '../../../entities/request/model/types.ts';
 import { ErrorMessage, Field, Form, Formik, type FormikConfig } from 'formik';
 import { createRequestSchema } from '../model/validation';
+import { CATEGORY_REQUEST_FORM_CONSTANTS } from './RequestForm.constants.ts';
 import styles from './RequestForm.module.css';
-import cn from 'classnames';
-
-const categories = ['Техническая', 'Финансовая', 'Общая'];
 
 interface CreateFormProps
   extends Pick<RequestType, 'name' | 'description' | 'category'> {
@@ -65,9 +63,9 @@ export const RequestForm: FC<CreateFormProps> = ({
         <div className={styles.field}>
           <Field as="select" name="category" className={styles.select}>
             <option value="">Выберите категорию</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+            {CATEGORY_REQUEST_FORM_CONSTANTS.map((category) => (
+              <option key={category} value={category}>
+                {category}
               </option>
             ))}
           </Field>

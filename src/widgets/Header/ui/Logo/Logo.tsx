@@ -1,3 +1,4 @@
+import React from 'react';
 import logo from '../../../../shared/assets/logo.svg';
 import { NavLink } from 'react-router-dom';
 import { ROUTE_PATHS } from '../../../../shared/config/routeConfig/routePaths.ts';

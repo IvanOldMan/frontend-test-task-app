@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: #1890ff;
+  font-size: 24px;
+  font-weight: 500;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.08);
+  max-width: 480px;
+  margin: 48px auto 0 auto;
+  padding: 48px 24px;
+} 
