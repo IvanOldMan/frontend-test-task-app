@@ -14,14 +14,16 @@ export const RequestItem = () => {
   const [modalOpenState, setModalOpenState] = useState<boolean>(false);
 
   const request = useSelector((state: RootState) =>
-    state.requests.list.find((r) => {
-      return r.id === id.slice(1);
-    }),
+    state.requests.list.find(({ id: requestId }) => requestId === id),
   );
 
+  if (!request) {
+    throw new Error('Request item not found');
+  }
+
   const handleDelete = () => {
-    if (confirm(`Удалить заявку ${request.name}`)) {
-      dispatch(deleteRequest(request!.id));
+    if (request && confirm(`Удалить заявку ${request.name}`)) {
+      dispatch(deleteRequest(request.id));
       navigate('/requests');
     }
   };
@@ -29,14 +31,6 @@ export const RequestItem = () => {
   const handleOpenModal = () => {
     setModalOpenState(true);
   };
-
-  if (!request) {
-    return (
-      <div style={{ padding: '1rem' }}>
-        <p>Заявка не найдена</p>
-      </div>
-    );
-  }
 
   return (
     <div style={{ padding: '1rem' }}>

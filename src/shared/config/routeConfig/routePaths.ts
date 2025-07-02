@@ -4,5 +4,5 @@ export const ROUTE_PATHS = {
   REQUESTS: REQUEST_ROUTE_PATH,
   CREATE_REQUEST: `${REQUEST_ROUTE_PATH}/new`,
   REQUEST_DETAIL: (id: string | number = 'id') =>
-    `${REQUEST_ROUTE_PATH}/:${id}`,
+    `${REQUEST_ROUTE_PATH}/${id}`,
 };

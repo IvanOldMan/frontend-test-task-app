@@ -27,6 +27,11 @@ export const CreateRequest = () => {
     navigate('/requests');
   };
 
+  // Пример: если есть переменная errors, выбросить ошибку при наличии ошибок
+  // if (errors && Object.keys(errors).length > 0) {
+  //   throw new Error('Validation error in CreateRequest');
+  // }
+
   return (
     <>
       <RequestForm onSubmit={onSubmit} />
