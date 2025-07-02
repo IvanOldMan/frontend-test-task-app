@@ -7,6 +7,7 @@ import { ROUTE_PATHS } from '../shared/config/routeConfig/routePaths.ts';
 export const RequestsList = () => {
   const requests = useSelector((state: any) => state.requests.list);
   const navigate = useNavigate();
+  console.log('requests', typeof requests, requests);
 
   const handleClick: MouseEventHandler<HTMLUListElement> = (event) => {
     const id = (event.target as Element).closest('li')?.id;
@@ -24,16 +25,16 @@ export const RequestsList = () => {
     <div>
       <h1>Requests_1</h1>
       <ul onClick={handleClick}>
-        {requests.map((request: RequestType) => {
-          console.log(request);
+        {requests &&
+          requests.map((request: RequestType) => {
+            console.log(request);
 
-          return (
-            <li key={request.id} id={request.id}>
-              {' '}
-              {request.name} - {request.description}
-            </li>
-          );
-        })}
+            return (
+              <li key={request.id} id={request.id}>
+                {request.name} - {request.description}
+              </li>
+            );
+          })}
       </ul>
     </div>
   );

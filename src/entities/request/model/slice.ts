@@ -1,12 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { type RequestType } from './types.ts';
+import {
+  loadRequests,
+  saveRequests,
+} from '../../../shared/lib/storage/localStorageService.ts';
 
 interface RequestState {
-  list?: RequestType[];
+  list: RequestType[];
 }
 
 const initialState: RequestState = {
-  list: JSON.parse(localStorage.getItem('requests')) || [],
+  list: loadRequests() || [],
 };
 
 const requestSlice = createSlice({
@@ -15,17 +19,17 @@ const requestSlice = createSlice({
   reducers: {
     addRequest(state, action) {
       state.list.push(action.payload);
-      localStorage.setItem('requests', JSON.stringify(state.list));
+      saveRequests(state.list);
     },
     deleteRequest(state, action) {
-      state.list = state.list.filter((r) => r.id !== action.payload);
-      localStorage.setItem('requests', JSON.stringify(state.list));
+      state.list = state.list.filter((request) => request.id !== action.payload);
+      saveRequests(state.list);
     },
     updateRequest(state, action) {
-      state.list = state.list.map((r) =>
-        r.id === action.payload.id ? action.payload : r,
+      state.list = state.list.map((request) =>
+        request.id === action.payload.id ? action.payload : request,
       );
-      localStorage.setItem('requests', JSON.stringify(state.list));
+      saveRequests(state.list);
     },
   },
 });
