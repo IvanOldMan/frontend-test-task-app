@@ -4,12 +4,14 @@ import { type RootState } from '../app/store.ts';
 // import { RequestType } from '../entities/request/model/types.ts';
 import { deleteRequest } from '../entities/request/model/slice.ts';
 // import { Button } from '@/shared/ui/Button';
-// import { useState } from 'react';
+import { useState } from 'react';
+import { Modal } from '../widgets/Modal/ui/Modal.tsx';
 
 export const RequestItem = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [modalOpenState, setModalOpenState] = useState<boolean>(false);
 
   const request = useSelector((state: RootState) =>
     state.requests.list.find((r) => {
@@ -23,6 +25,11 @@ export const RequestItem = () => {
       navigate('/requests');
     }
   };
+
+  const handleOpenModal = () => {
+    setModalOpenState(true);
+  };
+
   if (!request) {
     return (
       <div style={{ padding: '1rem' }}>
@@ -45,7 +52,7 @@ export const RequestItem = () => {
       </p>
 
       <div style={{ marginTop: '1rem' }}>
-        <button onClick={() => alert('testing')}>Редактировать заявку</button>
+        <button onClick={handleOpenModal}>Редактировать заявку</button>
         <button
           onClick={handleDelete}
           style={{
@@ -57,6 +64,11 @@ export const RequestItem = () => {
           Удалить заявку
         </button>
       </div>
+      <Modal
+        isOpen={modalOpenState}
+        data={request}
+        onClose={() => setModalOpenState(false)}
+      />
     </div>
   );
 };

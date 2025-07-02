@@ -1,24 +1,22 @@
 import React, { type FC, useRef, useEffect } from 'react';
 import { type RequestType } from '../../../entities/request/model/types.ts';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { v4 as createUniqId } from 'uuid';
-import { addRequest } from '../../../entities/request/model/slice';
-import { type AppDispatch } from '../../../app/store.ts';
+import { ErrorMessage, Field, Form, Formik, type FormikConfig } from 'formik';
 import { createRequestSchema } from '../model/validation';
 
 const categories = ['Техническая', 'Финансовая', 'Общая'];
 
-export const CreateRequestForm: FC<Partial<RequestType>> = ({
-  id,
+interface CreateFormProps
+  extends Pick<RequestType, 'name' | 'description' | 'category'> {
+  onSubmit: FormikConfig<RequestType>['onSubmit'];
+  onClose: () => void;
+}
+
+export const RequestForm: FC<CreateFormProps> = ({
+  onSubmit,
   name = '',
   description = '',
   category = '',
-  createdAt,
 }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
   const focusRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -31,18 +29,12 @@ export const CreateRequestForm: FC<Partial<RequestType>> = ({
     <Formik
       initialValues={{ name, description, category }}
       validationSchema={createRequestSchema}
-      onSubmit={(values) => {
-        dispatch(
-          addRequest({
-            ...values,
-            id: id || createUniqId(),
-            createdAt: createdAt || new Date().toISOString(),
-          }),
-        );
-        navigate('/requests');
-      }}
+      onSubmit={onSubmit}
     >
-      <Form style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Form
+        id="fuckenForm"
+        style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+      >
         <h2>Создание заявки</h2>
 
         <div>
@@ -74,8 +66,6 @@ export const CreateRequestForm: FC<Partial<RequestType>> = ({
             style={{ color: 'red' }}
           />
         </div>
-
-        <button type="submit">Создать заявку</button>
       </Form>
     </Formik>
   );

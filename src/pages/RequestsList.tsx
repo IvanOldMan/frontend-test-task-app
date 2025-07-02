@@ -11,8 +11,6 @@ export const RequestsList = () => {
   const handleClick: MouseEventHandler<HTMLUListElement> = (event) => {
     const id = (event.target as Element).closest('li')?.id;
 
-    console.log(requests);
-    console.log(id);
     if (id) {
       navigate(ROUTE_PATHS.REQUEST_DETAIL(id));
     }
