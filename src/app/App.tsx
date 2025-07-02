@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { RequestItem } from '../pages/RequestItem/RequestItem.tsx';
 import { Header } from '../widgets/Header/Header.tsx';
 import { Footer } from '../shared/ui/Footer/Footer.tsx';
@@ -19,6 +19,10 @@ const App = () => {
       <ErrorBoundaryWithLocation>
         <Routes>
           <Route
+            path={ROUTE_PATHS.ROOT}
+            element={<Navigate to={ROUTE_PATHS.REQUESTS} replace />}
+          />
+          <Route
             path={ROUTE_PATHS.REQUESTS}
             element={
               <PrivateRout>
@@ -26,13 +30,15 @@ const App = () => {
               </PrivateRout>
             }
           />
-          <Route path={ROUTE_PATHS.REQUESTS} element={<RequestsList />} />
           <Route
             path={ROUTE_PATHS.CREATE_REQUEST}
             element={<CreateRequest />}
           />
           <Route path={ROUTE_PATHS.WELCOME} element={<WelcomePage />} />
-          <Route path={ROUTE_PATHS.REQUEST_DETAIL(':id')} element={<RequestItem />} />
+          <Route
+            path={ROUTE_PATHS.REQUEST_DETAIL(':id')}
+            element={<RequestItem />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </ErrorBoundaryWithLocation>
