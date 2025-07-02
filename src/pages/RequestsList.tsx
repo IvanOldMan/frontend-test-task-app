@@ -5,6 +5,9 @@ import { type RequestType } from '../entities/request/model/types.ts';
 import { ROUTE_PATHS } from '../shared/config/routeConfig/routePaths.ts';
 import { type RootState } from '../app/store.ts';
 import { RequestCard } from '../shared/ui/RequestCard';
+import styles from './RequestsList.module.css';
+import cn from 'classnames';
+import { Button } from '../shared/ui/Button';
 
 export const RequestsList = () => {
   const requests = useSelector((state: RootState) => state.requests.list);
@@ -13,9 +16,6 @@ export const RequestsList = () => {
 
   if (!Array.isArray(requests)) {
     throw new Error('requests is not an array');
-  }
-  if (!requests.length) {
-    throw new Error('No requests found');
   }
 
   const handleClick: MouseEventHandler<HTMLUListElement> = (event) => {
@@ -26,12 +26,23 @@ export const RequestsList = () => {
     }
   };
 
+  const handleAdd = () => {
+    navigate(ROUTE_PATHS.CREATE_REQUEST);
+  };
+
   return (
     <div>
-      <h1>Requests_1</h1>
-      <ul onClick={handleClick} style={{ listStyle: 'none', padding: 0 }}>
-        {requests &&
-          requests.map((request: RequestType) => (
+      <div className="header-spacer" />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
+        <h1 className={styles.header} style={{ margin: 0, flex: 1, textAlign: 'center' }}>Список заявок</h1>
+      </div>
+      {requests.length === 0 ? (
+        <div style={{ textAlign: 'center', color: '#888', fontSize: 18, marginTop: 32 }}>
+          Список заявок пуст
+        </div>
+      ) : (
+        <ul onClick={handleClick} className={styles.list}>
+          {requests.map((request: RequestType) => (
             <li
               key={request.id}
               id={request.id.toString()}
@@ -40,7 +51,8 @@ export const RequestsList = () => {
               <RequestCard request={request} />
             </li>
           ))}
-      </ul>
+        </ul>
+      )}
     </div>
   );
 };

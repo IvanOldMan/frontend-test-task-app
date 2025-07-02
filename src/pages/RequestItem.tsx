@@ -1,11 +1,13 @@
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { type RootState } from '../app/store.ts';
-// import { RequestType } from '../entities/request/model/types.ts';
 import { deleteRequest } from '../entities/request/model/slice.ts';
-// import { Button } from '@/shared/ui/Button';
 import { useState } from 'react';
 import { Modal } from '../widgets/Modal/ui/Modal.tsx';
+import styles from './RequestItem.module.css';
+import { Button } from '../shared/ui/Button';
+import { RequestForm } from '../features/create-request-form/ui/RequestForm.tsx';
 
 export const RequestItem = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,10 +18,6 @@ export const RequestItem = () => {
   const request = useSelector((state: RootState) =>
     state.requests.list.find(({ id: requestId }) => requestId === id),
   );
-
-  if (!request) {
-    throw new Error('Request item not found');
-  }
 
   const handleDelete = () => {
     if (request && confirm(`Удалить заявку ${request.name}`)) {
@@ -32,37 +30,63 @@ export const RequestItem = () => {
     setModalOpenState(true);
   };
 
-  return (
-    <div style={{ padding: '1rem' }}>
-      <h1>{request.name}</h1>
-      <p>
-        <strong>Описание:</strong> {request.description}
-      </p>
-      <p>
-        <strong>Категория:</strong> {request.category}
-      </p>
-      <p>
-        <strong>Создана:</strong> {new Date(request.createdAt).toLocaleString()}
-      </p>
+  if (!request) {
+    throw new Error('Request item not found');
+  }
 
-      <div style={{ marginTop: '1rem' }}>
-        <button onClick={handleOpenModal}>Редактировать заявку</button>
-        <button
-          onClick={handleDelete}
-          style={{
-            marginLeft: '1rem',
-            backgroundColor: '#f44336',
-            color: 'white',
-          }}
-        >
+  const onSubmit = (data: any) => {
+    // Handle form submission
+  };
+
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>{request.name}</h1>
+      <p>
+        <span className={styles.label}>Описание:</span>
+        <span className={styles.value}>{request.description}</span>
+      </p>
+      <p>
+        <span className={styles.label}>Категория:</span>
+        <span className={styles.value}>{request.category}</span>
+      </p>
+      <p>
+        <span className={styles.label}>Создана:</span>
+        <span className={styles.value}>
+          {new Date(request.createdAt).toLocaleString('ru-RU', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
+        </span>
+      </p>
+      <div className={styles.actions}>
+        <Button secondary onClick={handleOpenModal}>
+          Редактировать заявку
+        </Button>
+        <Button danger onClick={handleDelete}>
           Удалить заявку
-        </button>
+        </Button>
       </div>
-      <Modal
-        isOpen={modalOpenState}
-        data={request}
-        onClose={() => setModalOpenState(false)}
-      />
+      <Modal isOpen={modalOpenState} onClose={() => setModalOpenState(false)}>
+        <RequestForm
+          onSubmit={onSubmit}
+          name={request.name}
+          description={request.description}
+          category={request.category}
+          onClose={() => setModalOpenState(false)}
+          title="Редактирование заявки"
+        />
+        <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
+          <Button type="submit" form="fuckenForm">
+            Сохранить изменения
+          </Button>
+          <Button secondary onClick={() => setModalOpenState(false)}>
+            Отмена
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 };

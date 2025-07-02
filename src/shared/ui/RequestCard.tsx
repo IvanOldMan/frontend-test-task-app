@@ -1,11 +1,14 @@
 import React from 'react';
 import type { RequestType } from '../../entities/request/model/types';
+import styles from './RequestCard.module.css';
+import cn from 'classnames';
 
 interface RequestCardProps {
   request: RequestType;
+  className?: string;
 }
 
-export const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
+export const RequestCard: React.FC<RequestCardProps> = ({ request, className }) => {
   const date = new Date(request.createdAt);
   const formattedDate = date.toLocaleDateString('ru-RU', {
     day: '2-digit',
@@ -14,9 +17,9 @@ export const RequestCard: React.FC<RequestCardProps> = ({ request }) => {
   });
 
   return (
-    <div style={{ padding: '8px 0' }}>
-      <strong>{request.name}</strong>
-      <span style={{ marginLeft: 12, color: '#888' }}>{formattedDate}</span>
+    <div className={cn(styles.card, className)}>
+      <span className={styles.title}>{request.name}</span>
+      <span className={styles.date}>{formattedDate}</span>
     </div>
   );
 }; 

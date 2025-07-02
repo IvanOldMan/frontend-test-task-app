@@ -14,6 +14,8 @@ const App = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        minHeight: '100vh',
+        paddingBottom: 64,
       }}
     >
       <Header />

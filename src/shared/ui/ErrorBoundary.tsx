@@ -3,6 +3,8 @@ import type { ReactNode } from 'react';
 // Для поддержки PropTypes в TypeScript можно установить @types/prop-types
 import PropTypes from 'prop-types';
 import { useNavigate, useLocation } from 'react-router-dom';
+import styles from './ErrorBoundary.module.css';
+import { Button } from './Button';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -52,13 +54,15 @@ ErrorBoundary.propTypes = {
 function ErrorFallback() {
   const navigate = useNavigate();
   return (
-    <div style={{ textAlign: 'center', marginTop: '10vh' }}>
-      <h1>Что-то пошло не так...</h1>
-      <div style={{ marginTop: 24 }}>
-        <button onClick={() => navigate(-1)} style={{ marginRight: 16 }}>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Что-то пошло не так 😢</h1>
+      <div className={styles.actions}>
+        <Button secondary onClick={() => navigate(-1)}>
           Назад
-        </button>
-        <button onClick={() => navigate('/requests')}>На главную</button>
+        </Button>
+        <Button onClick={() => navigate('/requests')}>
+          На главную
+        </Button>
       </div>
     </div>
   );

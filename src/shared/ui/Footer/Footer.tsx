@@ -1,9 +1,11 @@
 import React from 'react';
+import styles from './Footer.module.css';
+import cn from 'classnames';
 
 export const Footer = () => {
   return (
-    <footer style={{ backgroundColor: 'lightblue' }}>
-      powered by Ivan Starikov. All rights reserved.
+    <footer className={styles.footer}>
+      © {new Date().getFullYear()} Заявки | Все права защищены
     </footer>
   );
 };

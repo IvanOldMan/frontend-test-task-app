@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as createUniqId } from 'uuid';
 import { type RequestType } from '../entities/request/model/types.ts';
 import { type AppDispatch } from '../app/store.ts';
+import { Button } from '../shared/ui/Button';
 
 export const CreateRequest = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,10 +36,10 @@ export const CreateRequest = () => {
   return (
     <>
       <RequestForm onSubmit={onSubmit} />
-      <button form="fuckenForm" type="submit">
-        Создать заявку
-      </button>
-      <button onClick={handleClose}>Отмена</button>
+      <div style={{ display: 'flex', gap: 12, marginTop: 16, justifyContent: 'center' }}>
+        <Button type="submit" form="fuckenForm">Создать заявку</Button>
+        <Button secondary onClick={handleClose}>Отмена</Button>
+      </div>
     </>
   );
 };
